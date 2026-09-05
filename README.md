@@ -1,4 +1,4 @@
-# StudyAI
+# StudyAI 🎓
 
 StudyAI is a modern, responsive web application designed to act as your personal AI Study Assistant. It helps students turn their academic problems into clear study plans, daily schedules, and actionable goals, all wrapped in a beautiful, sci-fi inspired **Red & White** theme.
 
@@ -8,21 +8,16 @@ StudyAI is a modern, responsive web application designed to act as your personal
 - **Sci-Fi Animations**: Dynamic geometric network backgrounds and floating particles on canvas.
 - **Full Authentication Flow**: Completely functioning Sign Up and Login pages.
 - **Dynamic Dashboard**: Generate study plans, track your progress, see daily schedules, and interact with a simulated AI chat interface.
-- **Persistent Storage**: Data is saved to a permanent SQLite database using a Python/Flask backend, with local browser storage as a fallback.
+- **Persistent Storage**: Data is saved seamlessly to your browser's LocalStorage.
 - **Session Management**: Data is safely scoped to individual user accounts.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - HTML5
 - CSS3 (Custom Variables, Flexbox, CSS Grid, Glassmorphism)
-- Vanilla JavaScript (DOM Manipulation, Canvas Animations, Fetch API)
-
-### Backend
-- **Language**: Python 3
-- **Framework**: Flask
-- **Database**: SQLite (via Flask-SQLAlchemy)
-- **CORS**: Flask-CORS for seamless local frontend-backend communication.
+- Vanilla JavaScript (DOM Manipulation, Canvas Animations)
+- LocalStorage API for persistent data and session management.
 
 ## Project Structure
 
@@ -37,45 +32,30 @@ StudyAI/
 │   └── scifi_bg.png        # Animated sci-fi background image
 │
 ├── js/
-│   ├── script.js           # Dashboard logic, canvas animations, API calls
-│   ├── login.js            # Login form validation and backend communication
-│   └── signup.js           # Signup form validation and backend communication
+│   ├── script.js           # Dashboard logic and canvas animations
+│   ├── login.js            # Login form validation and LocalStorage management
+│   └── signup.js           # Signup form validation and LocalStorage management
 │
-├── app.py                  # Main Python backend server (Flask)
-├── dashboard.html          # Main application dashboard
+├── index.html              # Main application dashboard (Root)
 ├── login.html              # Login page
 ├── signup.html             # Sign up page
-└── requirements.txt        # Python backend dependencies
+└── README.md
 ```
 
-## Getting Started
+## 🚀 Getting Started & Deployment
 
-To run StudyAI locally with its full database functionality, follow these steps:
+StudyAI is configured as a **purely static frontend application**. It runs directly in the browser and uses `localStorage` for all backend-like features (authentication, data saving), meaning there are absolutely zero servers or databases to configure!
 
-### Prerequisites
-Make sure you have [Python 3.x](https://www.python.org/downloads/) installed on your machine.
+### Running Locally
+Simply open the `index.html` file in your preferred web browser to launch the dashboard.
 
-### 1. Start the Backend Server
+### Deploying to Vercel (1-Click)
+Because the app is 100% static HTML/CSS/JS with an `index.html` root file, deploying it is incredibly easy:
 
-1. Open a terminal or command prompt in the `StudyAI` folder.
-2. Install the required Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the Flask server:
-   ```bash
-   python app.py
-   ```
-   *The server will start running on `http://127.0.0.1:5000` and will automatically create the `studyai.db` database file.*
+1. Push your `StudyAI` folder to a new GitHub repository.
+2. Go to [Vercel](https://vercel.com) and log in.
+3. Click **Add New > Project**.
+4. Import your GitHub repository.
+5. Do not configure anything in the build settings (Vercel automatically detects static sites). Just click **Deploy**.
 
-### 2. Launch the Frontend
-
-With the backend server running in the background, simply open the `login.html` or `signup.html` file in your preferred web browser. 
-
-1. Create a new account on the Sign Up page.
-2. Log in with your new credentials.
-3. Start generating study plans on your Dashboard!
-
----
-
-*Note: If the Python server is not running, the application will gracefully fall back to using your browser's local storage to save your session.*
+Within 30 seconds, your site will be live and fully functional on a `.vercel.app` domain!

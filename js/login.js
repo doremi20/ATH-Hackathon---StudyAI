@@ -77,35 +77,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show loading state
         setLoadingState(true);
 
-        // Authentication with Python Backend
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+        // Authentication Simulation with LocalStorage
+        setTimeout(() => {
+            const users = JSON.parse(localStorage.getItem('studyai_users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
             
-            const data = await response.json();
-            
-            if (response.ok) {
-                // Success
-                localStorage.setItem('studyai_currentUser', JSON.stringify(data.user));
-                window.location.href = 'dashboard.html';
+            if (user) {
+                // Success from local storage
+                localStorage.setItem('studyai_currentUser', JSON.stringify(user));
+                window.location.href = 'index.html';
+            } else if (email === 'student@studyai.com' && password === '123456') {
+                // Fallback default user
+                localStorage.setItem('studyai_currentUser', JSON.stringify({ name: 'Student', email }));
+                window.location.href = 'index.html';
             } else {
                 // Failure
                 setLoadingState(false);
-                showError(null, formError, data.error || 'Invalid email or password.');
+                showError(null, formError, 'Invalid email or password.');
                 // Add shake animation to form
                 loginForm.classList.add('shake');
                 setTimeout(() => loginForm.classList.remove('shake'), 500);
             }
-        } catch (error) {
-            console.error('Login error:', error);
-            setLoadingState(false);
-            showError(null, formError, 'Network error. Make sure the server is running.');
-            loginForm.classList.add('shake');
-            setTimeout(() => loginForm.classList.remove('shake'), 500);
-        }
+        }, 1500); // 1.5s delay to simulate network request
     });
 
     // Helper Functions

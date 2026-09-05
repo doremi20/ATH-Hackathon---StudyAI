@@ -28,44 +28,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-
 // Scroll Effects
-if (navbar) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-}
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
 
 // Mobile Menu
-if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        const icon = hamburger.querySelector('i');
-        if(mobileMenu.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-xmark');
-        } else {
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        }
-    });
+hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('active');
+    const icon = hamburger.querySelector('i');
+    if(mobileMenu.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-xmark');
+    } else {
+        icon.classList.remove('fa-xmark');
+        icon.classList.add('fa-bars');
+    }
+});
 
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            const icon = hamburger.querySelector('i');
-            if(icon) {
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-xmark');
-            }
-        });
+mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        hamburger.querySelector('i').classList.add('fa-bars');
+        hamburger.querySelector('i').classList.remove('fa-xmark');
     });
-}
+});
 
 // Navigation
 function scrollToSection(id) {
@@ -401,44 +392,23 @@ function showToast(msg) {
 }
 
 // Local Storage
-function getStorageKey() {
-    const currentUser = JSON.parse(localStorage.getItem('studyai_currentUser'));
-    if (currentUser && currentUser.email) {
-        return 'studyAI_data_' + currentUser.email;
-    }
-    return 'studyAI_data_guest';
-}
-
 function saveData() {
-    localStorage.setItem(getStorageKey(), JSON.stringify(studyData));
+    localStorage.setItem('studyAI_data', JSON.stringify(studyData));
 }
 
 function loadData() {
-    const saved = localStorage.getItem(getStorageKey());
+    const saved = localStorage.getItem('studyAI_data');
     if(saved) {
         studyData = JSON.parse(saved);
         
         // populate inputs if plan exists
         if(studyData.planGenerated) {
-            const problemText = document.getElementById('problem-text');
-            const inputDays = document.getElementById('input-days');
-            const inputSubjects = document.getElementById('input-subjects');
-            const inputHours = document.getElementById('input-hours');
-            const inputDifficulty = document.getElementById('input-difficulty');
-            
-            if(problemText) problemText.value = studyData.problem || '';
-            if(inputDays) inputDays.value = studyData.days || '';
-            if(inputSubjects) inputSubjects.value = studyData.subjects || '';
-            if(inputHours) inputHours.value = studyData.hours || '';
-            if(inputDifficulty) inputDifficulty.value = studyData.difficulty || 'medium';
+            document.getElementById('problem-text').value = studyData.problem || '';
+            document.getElementById('input-days').value = studyData.days || '';
+            document.getElementById('input-subjects').value = studyData.subjects || '';
+            document.getElementById('input-hours').value = studyData.hours || '';
+            document.getElementById('input-difficulty').value = studyData.difficulty || 'medium';
         }
-    } else {
-        // Reset state if no data found for this user
-        studyData = {
-            problem: '', days: 0, subjects: 0, hours: 0,
-            difficulty: 'medium', progress: 0, completedTasks: 0,
-            totalTasks: 0, streak: 0, planGenerated: false
-        };
     }
 }
 
@@ -517,7 +487,7 @@ if (canvas) {
             let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
             let directionX = (Math.random() * 2) - 1.5;
             let directionY = (Math.random() * 2) - 1.5;
-            let color = 'rgba(230, 57, 70, 0.6)'; // Cyber Blue
+            let color = 'rgba(0, 210, 255, 0.6)'; // Cyber Blue
 
             particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
         }
@@ -531,7 +501,7 @@ if (canvas) {
                 ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
                 if (distance < (canvas.width/7) * (canvas.height/7)) {
                     opacityValue = 1 - (distance/20000);
-                    ctx.strokeStyle = 'rgba(230, 57, 70,' + opacityValue + ')';
+                    ctx.strokeStyle = 'rgba(0, 210, 255,' + opacityValue + ')';
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -567,44 +537,3 @@ if (canvas) {
     init();
     animate();
 }
-
-const form = document.getElementById("loginForm");
-if (form) {
-    form.addEventListener("submit", async function(e) {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        
-        try {
-            const response = await fetch("http://127.0.0.1:5000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                alert("Login Successful! Redirecting...");
-                window.location.href = "/dashboard"; // Change to your main page
-            } else {
-                alert(data.error || "Login Failed");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
-        }
-    });
-}
-
-// Check for logged in user
-document.addEventListener('DOMContentLoaded', () => {
-    const currentUser = JSON.parse(localStorage.getItem('studyai_currentUser'));
-    if (currentUser && currentUser.name) {
-        const avatarBtns = document.querySelectorAll('.profile-avatar img');
-        avatarBtns.forEach(img => {
-            img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=random';
-        });
-    }
-});
-

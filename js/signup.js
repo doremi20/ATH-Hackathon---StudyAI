@@ -112,34 +112,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show loading state
         setLoadingState(true);
 
-        // Registration with Python Backend
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Success
-                alert('Account created successfully! You can now login.');
-                window.location.href = 'login.html';
-            } else {
-                // Handle API error
+        // Registration Simulation with LocalStorage
+        setTimeout(() => {
+            const users = JSON.parse(localStorage.getItem('studyai_users')) || [];
+            
+            // Check if email already exists
+            if (users.some(u => u.email === email)) {
                 setLoadingState(false);
-                showError(emailInput, emailError, data.error || 'Signup failed');
+                showError(emailInput, emailError, 'Email already in use');
                 signupForm.classList.add('shake');
                 setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
             }
-        } catch (error) {
-            console.error('Signup error:', error);
-            setLoadingState(false);
-            showError(null, formError, 'Network error. Make sure the server is running.');
-            signupForm.classList.add('shake');
-            setTimeout(() => signupForm.classList.remove('shake'), 500);
-        }
+            
+            // Add new user
+            users.push({ name, email, password });
+            localStorage.setItem('studyai_users', JSON.stringify(users));
+            
+            // Success
+            alert('Account created successfully! You can now login.');
+            window.location.href = 'login.html';
+        }, 1500); // 1.5s delay to simulate network request
     });
 
     // Helper Functions
