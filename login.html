@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | StudyAI</title>
+    <!-- Use existing styles and login specific styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page">
+    <!-- Sci-Fi Canvas Background -->
+    <canvas id="sci-fi-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
+    
+    <!-- Scanlines Overlay -->
+    <div class="scanlines" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(255, 255, 255, 0.02), rgba(230, 57, 70, 0.06)); background-size: 100% 2px, 3px 100%; z-index: 9999; pointer-events: none; opacity: 0.3;"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card glass-panel">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>StudyAI</span>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Login to continue your learning journey</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="email" placeholder="student@studyai.com" required>
+                    </div>
+                    <span class="error-message" id="email-error"></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <i class="fa-regular fa-eye-slash toggle-password" id="toggle-password"></i>
+                    </div>
+                    <span class="error-message" id="password-error"></span>
+                </div>
+                
+                <div class="form-actions">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <span>Remember Me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                
+                <div class="form-submit">
+                    <span class="error-message form-error" id="form-error"></span>
+                    <button type="submit" class="btn-primary login-submit-btn" id="login-btn">
+                        <span class="btn-text">Login</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span class="loader" style="display: none;"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script> <!-- Included to keep the sci-fi background running -->
+    <script src="js/login.js"></script>
+</body>
+</html>

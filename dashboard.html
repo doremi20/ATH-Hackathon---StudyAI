@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Student Problem Solver | StudyAI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sci-Fi Canvas -->
+    <canvas id="sci-fi-bg" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
+    
+    <!-- Scanlines Overlay -->
+    <div class="scanlines" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(255, 255, 255, 0.02), rgba(230, 57, 70, 0.06)); background-size: 100% 2px, 3px 100%; z-index: 9999; pointer-events: none; opacity: 0.3;"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>StudyAI</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#study-plan">Study Plan</a></li>
+                <li><a href="#doubts">Doubts</a></li>
+                <li><a href="#progress">Progress</a></li>
+            </ul>
+            <div class="nav-right">
+                <i class="fa-regular fa-bell notification-icon"></i>
+                <button class="profile-avatar" onclick="window.location.href='login.html'" style="background: none; border: none; cursor: pointer; padding: 0; outline: none;">
+                    <img src="https://ui-avatars.com/api/?name=Student&background=random" alt="Profile">
+                </button>
+                <div class="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#study-plan">Study Plan</a>
+        <a href="#doubts">Doubts</a>
+        <a href="#progress">Progress</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero" id="dashboard">
+        <div class="hero-content fade-in">
+            <h1>Your Personal AI Study Assistant</h1>
+            <p>Turn your academic problems into a clear study plan, daily schedule, and actionable goals.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToSection('problem-input')">Create My Study Plan</button>
+                <button class="btn-secondary" onclick="scrollToSection('doubts')">Ask AI</button>
+            </div>
+        </div>
+        <div class="hero-visual fade-in">
+            <div class="ai-orb">
+                <div class="orb-core"></div>
+                <div class="orb-ring ring-1"></div>
+                <div class="orb-ring ring-2"></div>
+            </div>
+            <div class="floating-card fc-1">
+                <i class="fa-regular fa-calendar-days"></i> <span id="hero-days-left">10 Days Left</span>
+            </div>
+            <div class="floating-card fc-2">
+                <i class="fa-solid fa-book"></i> <span id="hero-subjects">5 Subjects</span>
+            </div>
+            <div class="floating-card fc-3">
+                <i class="fa-solid fa-chart-line"></i> Today's Progress: <span id="hero-progress">0%</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Cards (Stats) -->
+    <section class="dashboard-stats fade-in">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+            <div class="stat-info">
+                <p>EXAM COUNTDOWN</p>
+                <h3 class="counter" id="stat-days">0</h3> <span class="unit">Days</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="stat-info">
+                <p>SUBJECTS</p>
+                <h3 class="counter" id="stat-subjects">0</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="stat-info">
+                <p>TODAY'S TARGET</p>
+                <h3 class="counter" id="stat-target">0</h3> <span class="unit">Hours</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-check-double"></i></div>
+            <div class="stat-info">
+                <p>COMPLETION</p>
+                <h3 class="counter" id="stat-completion">0</h3> <span class="unit">%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Problem Input Section -->
+    <section class="problem-section fade-in" id="problem-input">
+        <div class="section-header">
+            <h2>What's Your Study Problem?</h2>
+            <p>Tell the AI what you're struggling with or what you need to prepare for.</p>
+        </div>
+        <div class="form-container card">
+            <textarea id="problem-text" placeholder="Example: My exam is in 10 days and I have 5 subjects to prepare."></textarea>
+            
+            <div class="form-options">
+                <div class="input-group">
+                    <label>Exam Date (approx days)</label>
+                    <input type="number" id="input-days" placeholder="e.g. 10">
+                </div>
+                <div class="input-group">
+                    <label>Number of Subjects</label>
+                    <input type="number" id="input-subjects" placeholder="e.g. 5">
+                </div>
+                <div class="input-group">
+                    <label>Daily Study Hours</label>
+                    <input type="number" id="input-hours" placeholder="e.g. 5">
+                </div>
+                <div class="input-group">
+                    <label>Difficulty Level</label>
+                    <select id="input-difficulty">
+                        <option value="easy">Easy (Revision)</option>
+                        <option value="medium" selected>Medium (Standard)</option>
+                        <option value="hard">Hard (Starting from scratch)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn-primary full-width" onclick="analyzeProblem()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze My Problem
+            </button>
+        </div>
+
+        <!-- AI Response Card -->
+        <div class="ai-response-card" id="ai-response">
+            <div class="ai-header">
+                <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+                <h3>Here's your personalized plan</h3>
+            </div>
+            <div class="response-grid" id="response-grid">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="response-strategy" id="response-strategy">
+                <!-- Strategy -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Insights Section -->
+    <section class="insights-section fade-in" id="insights">
+        <div class="section-header">
+            <h2>AI Insights & Recommendations</h2>
+        </div>
+        <div class="insights-container" id="insights-container">
+            <div class="insight-card info">
+                <div class="insight-icon">💡</div>
+                <p>Submit your problem above to get personalized AI insights.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Plan Section -->
+    <section class="study-plan-section fade-in" id="study-plan">
+        <div class="section-header">
+            <h2>Your Personalized Study Plan</h2>
+            <p>A day-by-day roadmap generated for you.</p>
+        </div>
+        <div class="timeline" id="plan-timeline">
+            <div class="empty-state">Generate a plan to see your timeline here.</div>
+        </div>
+    </section>
+
+    <div class="grid-layout">
+        <!-- Topic Priority Section -->
+        <section class="priority-section fade-in">
+            <div class="section-header">
+                <h2>Topic Priority</h2>
+            </div>
+            <div class="priority-container card" id="priority-list">
+                <div class="empty-state">Generate a plan to see priorities.</div>
+            </div>
+        </section>
+
+        <!-- Daily Schedule Section -->
+        <section class="schedule-section fade-in" id="daily-schedule">
+            <div class="section-header">
+                <h2>Daily Schedule</h2>
+            </div>
+            <div class="schedule-container card" id="schedule-list">
+                <div class="empty-state">Generate a plan to see your daily schedule.</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Progress Dashboard Section -->
+    <section class="progress-section fade-in" id="progress">
+        <div class="section-header">
+            <h2>Your Study Progress</h2>
+        </div>
+        <div class="progress-grid">
+            <div class="progress-card card">
+                <h3>Overall Progress</h3>
+                <div class="circular-progress" id="circular-progress">
+                    <div class="value-container">0%</div>
+                </div>
+            </div>
+            <div class="progress-card card details-card">
+                <h3>Progress Details</h3>
+                <div class="progress-bar-item">
+                    <div class="bar-header">
+                        <span>Subjects Completed</span>
+                        <span id="subj-comp-text">0 / 0</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="subj-comp-bar" style="width:0%"></div></div>
+                </div>
+                <div class="progress-bar-item">
+                    <div class="bar-header">
+                        <span>Topics Completed</span>
+                        <span id="topic-comp-text">0 / 0</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="topic-comp-bar" style="width:0%"></div></div>
+                </div>
+                <div class="progress-bar-item">
+                    <div class="bar-header">
+                        <span>Study Hours</span>
+                        <span id="hour-comp-text">0 / 0</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill" id="hour-comp-bar" style="width:0%"></div></div>
+                </div>
+            </div>
+            <div class="progress-card card streak-card">
+                <h3>🔥 Study Streak</h3>
+                <h2 id="streak-days">0 Days</h2>
+                <div class="streak-calendar">
+                    <div class="day"><span class="day-name">MON</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">TUE</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">WED</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">THU</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">FRI</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">SAT</span><div class="circle"></div></div>
+                    <div class="day"><span class="day-name">SUN</span><div class="circle"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doubt Solver Section -->
+    <section class="doubt-section fade-in" id="doubts">
+        <div class="section-header">
+            <h2>Ask Your Study Doubt</h2>
+            <p>Get instant explanations and practice questions from AI.</p>
+        </div>
+        <div class="doubt-container card">
+            <div class="chat-history" id="chat-history">
+                <div class="chat-msg ai-msg">
+                    <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="msg-content">Hello! Ask me any concept or request practice questions.</div>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <textarea id="doubt-input" placeholder="Example: What is the difference between democracy and republic?"></textarea>
+                <div class="quick-actions">
+                    <button class="btn-outline btn-sm" onclick="quickAsk('Explain Simply')">Explain Simply</button>
+                    <button class="btn-outline btn-sm" onclick="quickAsk('Give Example')">Give Example</button>
+                    <button class="btn-outline btn-sm" onclick="quickAsk('Give Practice Questions')">Give Practice Questions</button>
+                </div>
+                <button class="btn-primary full-width mt-10" onclick="askDoubt()">
+                    <i class="fa-regular fa-paper-plane"></i> Ask AI
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fa-solid fa-graduation-cap"></i> StudyAI
+            </div>
+            <p class="tagline">Study smarter. Plan better. Achieve more.</p>
+            <div class="footer-links">
+                <a href="#dashboard">Dashboard</a>
+                <a href="#study-plan">Study Plan</a>
+                <a href="#doubts">Doubt Solver</a>
+                <a href="#progress">Progress</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudyAI. Built for Students.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Notification</div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
